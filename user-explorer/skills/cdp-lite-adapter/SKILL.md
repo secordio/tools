@@ -18,7 +18,7 @@ Map new data sources into the existing CDP-lite build pipeline while keeping out
 
 ## Adapter Targets
 
-- `scripts/adapters/adobe.js`
+- `scripts/adapters/activity.js`
   - Normalize to: email, date, login, total_views, unique_views, dashboard_name (optional)
 - `scripts/adapters/profiles.js`
   - Normalize to: email, name, department, geo, title, manager_email, skip_level_email

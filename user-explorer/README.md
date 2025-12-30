@@ -15,14 +15,14 @@ Open: `http://127.0.0.1:8080/app/index.html`
 
 ## Repo Layout
 
-- `inputs/` source exports (Adobe + profiles)
+- `inputs/` source exports (activity + profiles)
 - `scripts/` build pipeline (adapters, enrichments, utils)
 - `data/` build outputs (index, facets, dashboards, per-user JSON)
 - `app/` static UI (index.html, app.js, styles.css)
 
 ## Data Inputs
 
-- `inputs/adobe_activity.csv` or `inputs/adobe_activity.json`
+- `inputs/activity.csv` or `inputs/activity.json`
   - required: `email`, `date`, `login`, `total_views`, `unique_views`
   - optional: `dashboard_name`
 - `inputs/user_profiles.json`
@@ -44,7 +44,7 @@ Activity score is normalized per metric and used for sorting, filters, and segme
 
 1. Replace files in `inputs/` with your real exports.
 2. Update adapters if field names or formats differ:
-   - `scripts/adapters/adobe.js`
+   - `scripts/adapters/activity.js`
    - `scripts/adapters/profiles.js`
 3. Update enrichments if needed:
    - `scripts/enrichments/score.js`

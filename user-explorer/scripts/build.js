@@ -1,6 +1,6 @@
 const fs = require('fs');
 const path = require('path');
-const { loadAdobeActivity } = require('./adapters/adobe');
+const { loadActivity } = require('./adapters/activity');
 const { loadProfiles } = require('./adapters/profiles');
 const { computeActivityScores } = require('./enrichments/score');
 const { computeSegments } = require('./enrichments/segments');
@@ -249,15 +249,15 @@ function buildDashboards(users) {
 
 function main() {
   const profilesPath = path.join(INPUTS_DIR, 'user_profiles.json');
-  const adobePathCsv = path.join(INPUTS_DIR, 'adobe_activity.csv');
-  const adobePathJson = path.join(INPUTS_DIR, 'adobe_activity.json');
+  const activityPathCsv = path.join(INPUTS_DIR, 'activity.csv');
+  const activityPathJson = path.join(INPUTS_DIR, 'activity.json');
 
   const profiles = loadProfiles(profilesPath);
-  const adobe = fs.existsSync(adobePathCsv)
-    ? loadAdobeActivity(adobePathCsv)
-    : loadAdobeActivity(adobePathJson);
+  const activity = fs.existsSync(activityPathCsv)
+    ? loadActivity(activityPathCsv)
+    : loadActivity(activityPathJson);
 
-  let users = collectUsers(profiles, adobe);
+  let users = collectUsers(profiles, activity);
   users = computeActivityScores(users);
   users = computeSegments(users);
 

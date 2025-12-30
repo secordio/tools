@@ -25,7 +25,7 @@ function normalizeRecord(record) {
   };
 }
 
-function loadAdobeActivity(filePath) {
+function loadActivity(filePath) {
   if (!fs.existsSync(filePath)) return [];
   const ext = path.extname(filePath).toLowerCase();
   let records = [];
@@ -41,4 +41,4 @@ function loadAdobeActivity(filePath) {
   return records.map(normalizeRecord).filter(Boolean);
 }
 
-module.exports = { loadAdobeActivity };
+module.exports = { loadActivity };

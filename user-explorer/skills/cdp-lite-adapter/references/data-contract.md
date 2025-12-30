@@ -2,7 +2,7 @@
 
 ## Inputs
 
-### Adobe activity (CSV or JSON)
+### Activity (CSV or JSON)
 Required (or derivable) fields:
 - `email`
 - `date` (ISO date string)

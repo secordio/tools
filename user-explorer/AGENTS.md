@@ -5,7 +5,7 @@ Adapt this prototype to real data sources while preserving the build outputs and
 
 ## Project Map
 
-- `inputs/` raw exports (Adobe + profiles)
+- `inputs/` raw exports (activity + profiles)
 - `scripts/adapters/` source parsing + normalization
 - `scripts/enrichments/` derived metrics + segments
 - `scripts/build.js` orchestration + output writers
@@ -22,7 +22,7 @@ Adapt this prototype to real data sources while preserving the build outputs and
 
 1. **Profiles**: `scripts/adapters/profiles.js`
    - Map your profile schema to: email, name, department, geo, title, manager_email, skip_level_email
-2. **Activity**: `scripts/adapters/adobe.js`
+2. **Activity**: `scripts/adapters/activity.js`
    - Map your activity fields to: email, date, login, total_views, unique_views, dashboard_name (optional)
 3. **Derived**: `scripts/enrichments/score.js`, `scripts/enrichments/segments.js`
    - Update scoring or segment rules if needed
