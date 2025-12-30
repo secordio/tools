@@ -5,7 +5,7 @@ Lightweight, static CDP-style user explorer. A Node.js build pipeline generates 
 ## Quick Start
 
 ```bash
-cd cdp-lite
+cd user-explorer
 make install
 make build
 make serve
@@ -68,7 +68,7 @@ For another LLM to extend this project with your data:
 3. (Optional) Package the skill as a `.skill` file:
 
 ```bash
-python3 /Users/scottsecord/.codex/skills/.system/skill-creator/scripts/package_skill.py cdp-lite/skills/cdp-lite-adapter
+python3 /Users/scottsecord/.codex/skills/.system/skill-creator/scripts/package_skill.py user-explorer/skills/cdp-lite-adapter
 ```
 
 The skill contains the exact workflow and file references needed to adapt new data sources.
