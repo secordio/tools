@@ -68,7 +68,7 @@ For another LLM to extend this project with your data:
 3. (Optional) Package the skill as a `.skill` file:
 
 ```bash
-python3 /Users/scottsecord/.codex/skills/.system/skill-creator/scripts/package_skill.py user-explorer/skills/cdp-lite-adapter
+python3 $CODEX_HOME/skills/.system/skill-creator/scripts/package_skill.py user-explorer/skills/cdp-lite-adapter
 ```
 
 The skill contains the exact workflow and file references needed to adapt new data sources.
