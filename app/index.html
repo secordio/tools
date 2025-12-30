@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>CDP-lite</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Fraunces:wght@500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <div class="app-shell">
+    <header class="top-bar">
+      <div class="brand">
+        <div>
+          <h1>User Explorer</h1>
+          <p>Internal activity explorer</p>
+        </div>
+      </div>
+      <div class="search-block">
+        <input id="searchInput" type="search" placeholder="Search name, email, title, department" />
+        <select id="sortSelect">
+          <option value="activity_score">Most active</option>
+          <option value="alpha">Alphabetical</option>
+          <option value="total_views">Most total views</option>
+          <option value="unique_views">Most unique views</option>
+          <option value="login_total">Most logins</option>
+          <option value="recent">Recently active</option>
+        </select>
+      </div>
+    </header>
+
+    <div class="layout">
+      <aside class="panel">
+        <div class="panel-head">
+          <h2>Filters</h2>
+          <button id="clearFilters" class="ghost">Clear all</button>
+        </div>
+        <div class="dashboards">
+          <div class="dashboards-head">
+            <h3>Dashboards</h3>
+            <button id="clearDashboard" class="ghost ghost-mini">Clear</button>
+          </div>
+          <input id="dashboardInput" list="dashboardOptions" placeholder="Type to filter dashboards" />
+          <datalist id="dashboardOptions"></datalist>
+          <div id="dashboardMeta" class="dashboard-meta"></div>
+        </div>
+        <div id="filters" class="filters"></div>
+      </aside>
+
+      <section class="panel results-panel">
+        <div class="panel-head">
+          <h2>Users</h2>
+          <div class="tabs">
+            <button class="tab active" data-tab="users" id="tabUsers">Users</button>
+            <button class="tab" data-tab="breakdown" id="tabBreakdown">Breakdown</button>
+          </div>
+          <div class="results-controls">
+            <label class="toggle">
+              <input type="checkbox" id="compactToggle" />
+              <span>Compact</span>
+            </label>
+            <span id="resultCount"></span>
+          </div>
+        </div>
+        <div id="distribution" class="distribution"></div>
+        <div id="results" class="results"></div>
+      </section>
+
+      <section class="panel detail-panel">
+        <div class="panel-head">
+          <h2>Profile</h2>
+        </div>
+        <div id="detail" class="detail">
+          <div class="empty-state">
+            <h3>Select a user</h3>
+            <p>Click a record to explore weekly activity and dashboard usage.</p>
+          </div>
+        </div>
+      </section>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/minisearch@6.3.0/dist/umd/index.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>

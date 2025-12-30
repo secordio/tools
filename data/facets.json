@@ -1,0 +1,50 @@
+{
+  "department": {
+    "Finance": 16,
+    "Marketing": 16,
+    "Executive": 1,
+    "Sales": 14,
+    "Engineering": 14,
+    "HR": 14,
+    "Ops": 14,
+    "Product": 14
+  },
+  "geo": {
+    "NA": 27,
+    "EMEA": 26,
+    "APAC": 25,
+    "LATAM": 25
+  },
+  "title": {
+    "Sr Analyst": 18,
+    "Analyst": 18,
+    "VP Strategy": 1,
+    "Manager": 17,
+    "Sr Manager": 17,
+    "Director": 16,
+    "VP": 16
+  },
+  "manager_email": {
+    "boss@company.com": 36,
+    "ceo@company.com": 1,
+    "lead@company.com": 33,
+    "chief@company.com": 33
+  },
+  "skip_level_email": {
+    "vp@company.com": 36,
+    "board@company.com": 1,
+    "svp@company.com": 33,
+    "evp@company.com": 33
+  },
+  "segments": {
+    "low_adopter": 21,
+    "power_user": 11,
+    "exec_team": 33
+  },
+  "activity_score_bucket": {
+    "0.2 - 0.4": 63,
+    "0.0 - 0.2": 16,
+    "0.8 - 1.0": 1,
+    "0.4 - 0.6": 23
+  }
+}

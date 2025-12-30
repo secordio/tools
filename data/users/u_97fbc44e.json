@@ -1,0 +1,220 @@
+{
+  "email": "user1030@company.com",
+  "attributes": {
+    "name": "User 1030",
+    "department": "Sales",
+    "geo": "APAC",
+    "title": "Analyst",
+    "manager_email": "boss@company.com",
+    "skip_level_email": "vp@company.com"
+  },
+  "activity_summary": {
+    "login_total": 1,
+    "total_views": 38,
+    "unique_views": 5,
+    "last_active_date": "2025-08-03"
+  },
+  "weekly_activity": [
+    {
+      "week": "2025-06-02",
+      "login": 0,
+      "total_views": 0,
+      "unique_views": 0
+    },
+    {
+      "week": "2025-06-09",
+      "login": 0,
+      "total_views": 0,
+      "unique_views": 0
+    },
+    {
+      "week": "2025-06-16",
+      "login": 0,
+      "total_views": 0,
+      "unique_views": 0
+    },
+    {
+      "week": "2025-06-23",
+      "login": 0,
+      "total_views": 0,
+      "unique_views": 0
+    },
+    {
+      "week": "2025-06-30",
+      "login": 0,
+      "total_views": 0,
+      "unique_views": 0
+    },
+    {
+      "week": "2025-07-07",
+      "login": 0,
+      "total_views": 0,
+      "unique_views": 0
+    },
+    {
+      "week": "2025-07-14",
+      "login": 0,
+      "total_views": 0,
+      "unique_views": 0
+    },
+    {
+      "week": "2025-07-21",
+      "login": 0,
+      "total_views": 0,
+      "unique_views": 0
+    },
+    {
+      "week": "2025-07-28",
+      "login": 1,
+      "total_views": 38,
+      "unique_views": 5
+    },
+    {
+      "week": "2025-08-04",
+      "login": 0,
+      "total_views": 0,
+      "unique_views": 0
+    },
+    {
+      "week": "2025-08-11",
+      "login": 0,
+      "total_views": 0,
+      "unique_views": 0
+    },
+    {
+      "week": "2025-08-18",
+      "login": 0,
+      "total_views": 0,
+      "unique_views": 0
+    },
+    {
+      "week": "2025-08-25",
+      "login": 0,
+      "total_views": 0,
+      "unique_views": 0
+    },
+    {
+      "week": "2025-09-01",
+      "login": 0,
+      "total_views": 0,
+      "unique_views": 0
+    },
+    {
+      "week": "2025-09-08",
+      "login": 0,
+      "total_views": 0,
+      "unique_views": 0
+    },
+    {
+      "week": "2025-09-15",
+      "login": 0,
+      "total_views": 0,
+      "unique_views": 0
+    },
+    {
+      "week": "2025-09-22",
+      "login": 0,
+      "total_views": 0,
+      "unique_views": 0
+    },
+    {
+      "week": "2025-09-29",
+      "login": 0,
+      "total_views": 0,
+      "unique_views": 0
+    },
+    {
+      "week": "2025-10-06",
+      "login": 0,
+      "total_views": 0,
+      "unique_views": 0
+    },
+    {
+      "week": "2025-10-13",
+      "login": 0,
+      "total_views": 0,
+      "unique_views": 0
+    },
+    {
+      "week": "2025-10-20",
+      "login": 0,
+      "total_views": 0,
+      "unique_views": 0
+    },
+    {
+      "week": "2025-10-27",
+      "login": 0,
+      "total_views": 0,
+      "unique_views": 0
+    },
+    {
+      "week": "2025-11-03",
+      "login": 0,
+      "total_views": 0,
+      "unique_views": 0
+    },
+    {
+      "week": "2025-11-10",
+      "login": 0,
+      "total_views": 0,
+      "unique_views": 0
+    },
+    {
+      "week": "2025-11-17",
+      "login": 0,
+      "total_views": 0,
+      "unique_views": 0
+    },
+    {
+      "week": "2025-11-24",
+      "login": 0,
+      "total_views": 0,
+      "unique_views": 0
+    },
+    {
+      "week": "2025-12-01",
+      "login": 0,
+      "total_views": 0,
+      "unique_views": 0
+    },
+    {
+      "week": "2025-12-08",
+      "login": 0,
+      "total_views": 0,
+      "unique_views": 0
+    },
+    {
+      "week": "2025-12-15",
+      "login": 0,
+      "total_views": 0,
+      "unique_views": 0
+    },
+    {
+      "week": "2025-12-22",
+      "login": 0,
+      "total_views": 0,
+      "unique_views": 0
+    },
+    {
+      "week": "2025-12-29",
+      "login": 0,
+      "total_views": 0,
+      "unique_views": 0
+    }
+  ],
+  "dashboard_activity": [
+    {
+      "dashboard_name": "Dashboard 034",
+      "total_views": 38,
+      "unique_views": 5,
+      "last_view_date": "2025-08-03"
+    }
+  ],
+  "derived": {
+    "segments": [],
+    "activity_score": 0.3735
+  },
+  "meta": {
+    "generated_at": "2025-12-30T18:05:03.489Z"
+  }
+}
