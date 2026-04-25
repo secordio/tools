@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Basketball Score Tracker</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      background: #0f0f0f;
+      color: #f0f0f0;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 24px 16px;
+      gap: 32px;
+    }
+
+    h1 {
+      font-size: 13px;
+      font-weight: 500;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: #555;
+    }
+
+    .court {
+      display: grid;
+      grid-template-columns: 1fr auto 1fr;
+      gap: 0;
+      width: 100%;
+      max-width: 680px;
+      align-items: start;
+    }
+
+    /* ── Team Panel ── */
+    .team {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 20px;
+      padding: 24px 16px;
+    }
+
+    .team-name-wrap {
+      position: relative;
+      width: 100%;
+      text-align: center;
+    }
+
+    .team-name {
+      background: transparent;
+      border: none;
+      border-bottom: 2px solid transparent;
+      color: inherit;
+      font-size: 18px;
+      font-weight: 700;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      text-align: center;
+      width: 100%;
+      outline: none;
+      transition: border-color 0.2s;
+      padding: 4px 2px;
+    }
+
+    .team-name:focus { border-bottom-color: currentColor; }
+    .team-name::placeholder { color: #444; }
+
+    .team-a .team-name { color: #4f9eff; }
+    .team-b .team-name { color: #ff6b4f; }
+
+    .score {
+      font-size: clamp(72px, 18vw, 120px);
+      font-weight: 800;
+      line-height: 1;
+      letter-spacing: -0.03em;
+      font-variant-numeric: tabular-nums;
+    }
+
+    .team-a .score { color: #4f9eff; }
+    .team-b .score { color: #ff6b4f; }
+
+    .btns {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 10px;
+      width: 100%;
+    }
+
+    .btn {
+      border: none;
+      border-radius: 14px;
+      font-size: 22px;
+      font-weight: 700;
+      cursor: pointer;
+      padding: 22px 8px;
+      transition: transform 0.08s, opacity 0.1s;
+      -webkit-tap-highlight-color: transparent;
+      user-select: none;
+      line-height: 1;
+    }
+
+    .btn:active { transform: scale(0.94); opacity: 0.85; }
+
+    .team-a .btn-plus { background: #1a3a5c; color: #4f9eff; }
+    .team-a .btn-plus:hover { background: #1e4570; }
+    .team-a .btn-minus { background: #1e1e1e; color: #666; }
+    .team-a .btn-minus:hover { background: #2a2a2a; }
+
+    .team-b .btn-plus { background: #4a1f18; color: #ff6b4f; }
+    .team-b .btn-plus:hover { background: #5a2820; }
+    .team-b .btn-minus { background: #1e1e1e; color: #666; }
+    .team-b .btn-minus:hover { background: #2a2a2a; }
+
+    .minus-row {
+      grid-column: 1 / -1;
+      display: flex;
+      justify-content: center;
+    }
+
+    .btn-minus {
+      font-size: 18px !important;
+      padding: 14px 8px !important;
+      border-radius: 10px !important;
+      width: 60%;
+    }
+
+    /* ── Divider ── */
+    .divider {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      padding: 24px 12px;
+      padding-top: 64px;
+    }
+
+    .vs {
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.15em;
+      color: #333;
+      text-transform: uppercase;
+    }
+
+    .diff-wrap {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 4px;
+    }
+
+    .diff {
+      font-size: 28px;
+      font-weight: 800;
+      color: #f0f0f0;
+      font-variant-numeric: tabular-nums;
+      min-width: 52px;
+      text-align: center;
+    }
+
+    .diff-label {
+      font-size: 10px;
+      letter-spacing: 0.12em;
+      color: #444;
+      text-transform: uppercase;
+    }
+
+    /* ── New Game ── */
+    .new-game-btn {
+      background: transparent;
+      border: 1px solid #2a2a2a;
+      color: #555;
+      font-size: 13px;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      padding: 12px 28px;
+      border-radius: 999px;
+      cursor: pointer;
+      transition: border-color 0.2s, color 0.2s;
+    }
+
+    .new-game-btn:hover {
+      border-color: #555;
+      color: #aaa;
+    }
+
+    @media (max-width: 440px) {
+      .btn { font-size: 18px; padding: 18px 6px; }
+      .btns { gap: 7px; }
+    }
+  </style>
+</head>
+<body>
+
+  <h1>Basketball</h1>
+
+  <div class="court">
+
+    <!-- Team A -->
+    <div class="team team-a">
+      <div class="team-name-wrap">
+        <input class="team-name" id="nameA" type="text" placeholder="Home" maxlength="14" />
+      </div>
+
+      <div class="score" id="scoreA">0</div>
+
+      <div class="btns">
+        <button class="btn btn-plus" onclick="add('A',1)">+1</button>
+        <button class="btn btn-plus" onclick="add('A',2)">+2</button>
+        <button class="btn btn-plus" onclick="add('A',3)">+3</button>
+        <div class="minus-row">
+          <button class="btn btn-minus" onclick="add('A',-1)">−1</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Divider -->
+    <div class="divider">
+      <span class="vs">vs</span>
+      <div class="diff-wrap">
+        <div class="diff" id="diff">—</div>
+        <div class="diff-label">diff</div>
+      </div>
+    </div>
+
+    <!-- Team B -->
+    <div class="team team-b">
+      <div class="team-name-wrap">
+        <input class="team-name" id="nameB" type="text" placeholder="Away" maxlength="14" />
+      </div>
+
+      <div class="score" id="scoreB">0</div>
+
+      <div class="btns">
+        <button class="btn btn-plus" onclick="add('B',1)">+1</button>
+        <button class="btn btn-plus" onclick="add('B',2)">+2</button>
+        <button class="btn btn-plus" onclick="add('B',3)">+3</button>
+        <div class="minus-row">
+          <button class="btn btn-minus" onclick="add('B',-1)">−1</button>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <button class="new-game-btn" onclick="newGame()">New Game</button>
+
+  <script>
+    let scores = { A: 0, B: 0 };
+
+    function add(team, pts) {
+      scores[team] = Math.max(0, scores[team] + pts);
+      render();
+    }
+
+    function render() {
+      document.getElementById('scoreA').textContent = scores.A;
+      document.getElementById('scoreB').textContent = scores.B;
+      const d = scores.A - scores.B;
+      document.getElementById('diff').textContent = d === 0 ? 'TIE' : (d > 0 ? '+' + d : d);
+    }
+
+    function newGame() {
+      scores.A = 0;
+      scores.B = 0;
+      render();
+    }
+
+    render();
+  </script>
+</body>
+</html>
