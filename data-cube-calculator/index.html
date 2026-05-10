@@ -1,0 +1,573 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Data Cube Calculator</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background: #f0f2f5;
+      color: #1a1a2e;
+      min-height: 100vh;
+      padding: 24px 16px 48px;
+    }
+
+    h1 {
+      font-size: 1.5rem;
+      font-weight: 700;
+      margin-bottom: 4px;
+    }
+    .subtitle {
+      font-size: 0.875rem;
+      color: #666;
+      margin-bottom: 24px;
+    }
+
+    .layout {
+      display: grid;
+      grid-template-columns: 1fr 340px;
+      gap: 20px;
+      max-width: 1000px;
+      margin: 0 auto;
+      align-items: start;
+    }
+
+    @media (max-width: 720px) {
+      .layout { grid-template-columns: 1fr; }
+    }
+
+    .card {
+      background: #fff;
+      border-radius: 12px;
+      padding: 20px;
+      box-shadow: 0 1px 4px rgba(0,0,0,0.08);
+    }
+
+    .card-title {
+      font-size: 0.75rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: #888;
+      margin-bottom: 16px;
+    }
+
+    /* ── Time dimension ── */
+    .time-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+    }
+
+    .field-group {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+    .field-group label {
+      font-size: 0.8rem;
+      font-weight: 600;
+      color: #555;
+    }
+    .field-group input,
+    .field-group select {
+      border: 1px solid #ddd;
+      border-radius: 8px;
+      padding: 8px 10px;
+      font-size: 0.9rem;
+      color: #1a1a2e;
+      background: #fafafa;
+      transition: border-color 0.15s;
+      width: 100%;
+    }
+    .field-group input:focus,
+    .field-group select:focus {
+      outline: none;
+      border-color: #6366f1;
+      background: #fff;
+    }
+
+    .time-result {
+      margin-top: 12px;
+      font-size: 0.82rem;
+      color: #6366f1;
+      font-weight: 600;
+      min-height: 1.2em;
+    }
+
+    /* ── Dimensions ── */
+    #dims-list {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .dim-row {
+      display: grid;
+      grid-template-columns: 1fr 110px 36px;
+      gap: 8px;
+      align-items: center;
+    }
+    .dim-row input {
+      border: 1px solid #ddd;
+      border-radius: 8px;
+      padding: 8px 10px;
+      font-size: 0.875rem;
+      color: #1a1a2e;
+      background: #fafafa;
+      transition: border-color 0.15s;
+      width: 100%;
+    }
+    .dim-row input:focus {
+      outline: none;
+      border-color: #6366f1;
+      background: #fff;
+    }
+    .dim-row input[type="number"] {
+      text-align: right;
+    }
+    .dim-row input[type="number"].warn {
+      border-color: #f59e0b;
+      background: #fffbeb;
+    }
+
+    .btn-remove {
+      width: 36px;
+      height: 36px;
+      border: none;
+      border-radius: 8px;
+      background: #fee2e2;
+      color: #dc2626;
+      font-size: 1.1rem;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: background 0.15s;
+    }
+    .btn-remove:hover { background: #fecaca; }
+
+    .dim-header {
+      display: grid;
+      grid-template-columns: 1fr 110px 36px;
+      gap: 8px;
+      margin-bottom: 4px;
+    }
+    .dim-header span {
+      font-size: 0.75rem;
+      font-weight: 600;
+      color: #888;
+      padding: 0 2px;
+    }
+    .dim-header span:nth-child(2) { text-align: right; }
+
+    .btn-add {
+      margin-top: 12px;
+      width: 100%;
+      padding: 9px;
+      border: 2px dashed #c7d2fe;
+      border-radius: 8px;
+      background: transparent;
+      color: #6366f1;
+      font-size: 0.875rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.15s;
+    }
+    .btn-add:hover {
+      background: #eef2ff;
+      border-color: #6366f1;
+    }
+
+    /* ── Fill factor ── */
+    .fill-row {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .fill-row input[type="range"] {
+      flex: 1;
+      accent-color: #6366f1;
+      height: 4px;
+    }
+    .fill-value {
+      font-size: 0.9rem;
+      font-weight: 700;
+      color: #6366f1;
+      width: 42px;
+      text-align: right;
+    }
+    .fill-hint {
+      font-size: 0.75rem;
+      color: #999;
+      margin-top: 6px;
+    }
+
+    /* ── Results ── */
+    .results-card {
+      position: sticky;
+      top: 24px;
+    }
+
+    .stat-block {
+      background: linear-gradient(135deg, #6366f1, #8b5cf6);
+      border-radius: 10px;
+      padding: 18px;
+      color: #fff;
+      margin-bottom: 16px;
+    }
+    .stat-label {
+      font-size: 0.72rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.07em;
+      opacity: 0.8;
+      margin-bottom: 4px;
+    }
+    .stat-value {
+      font-size: 2rem;
+      font-weight: 800;
+      line-height: 1;
+      letter-spacing: -0.02em;
+    }
+    .stat-sub {
+      font-size: 0.78rem;
+      opacity: 0.75;
+      margin-top: 4px;
+    }
+
+    .stat-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      padding: 8px 0;
+      border-bottom: 1px solid #f0f0f0;
+      font-size: 0.85rem;
+    }
+    .stat-row:last-child { border-bottom: none; }
+    .stat-row .label { color: #666; }
+    .stat-row .val { font-weight: 700; color: #1a1a2e; }
+
+    /* Formula */
+    .formula-section {
+      margin-top: 16px;
+    }
+    .formula-title {
+      font-size: 0.72rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: #888;
+      margin-bottom: 8px;
+    }
+    .formula-wrap {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 4px;
+      align-items: center;
+    }
+    .formula-chip {
+      background: #eef2ff;
+      color: #4338ca;
+      border-radius: 6px;
+      padding: 3px 8px;
+      font-size: 0.78rem;
+      font-weight: 600;
+      line-height: 1.4;
+    }
+    .formula-chip.time-chip {
+      background: #f0fdf4;
+      color: #15803d;
+    }
+    .formula-chip.fill-chip {
+      background: #fef9c3;
+      color: #92400e;
+    }
+    .formula-op {
+      font-size: 0.85rem;
+      color: #aaa;
+      font-weight: 700;
+    }
+    .formula-eq {
+      font-size: 0.85rem;
+      color: #6366f1;
+      font-weight: 700;
+    }
+
+    .empty-msg {
+      font-size: 0.82rem;
+      color: #bbb;
+      text-align: center;
+      padding: 12px 0;
+    }
+
+    section { margin-bottom: 16px; }
+  </style>
+</head>
+<body>
+
+<div style="max-width:1000px;margin:0 auto;">
+  <h1>Data Cube Calculator</h1>
+  <p class="subtitle">Estimate record counts for a multi-dimensional data product</p>
+</div>
+
+<div class="layout">
+
+  <!-- LEFT COLUMN -->
+  <div style="display:flex;flex-direction:column;gap:16px;">
+
+    <!-- Time -->
+    <div class="card">
+      <div class="card-title">Time Dimension</div>
+      <div class="time-grid">
+        <div class="field-group">
+          <label for="time-range">Number of Days</label>
+          <input type="number" id="time-range" value="365" min="1" step="1">
+        </div>
+        <div class="field-group">
+          <label for="grain">Grain</label>
+          <select id="grain">
+            <option value="1">Daily</option>
+            <option value="7">Weekly</option>
+            <option value="30">Monthly</option>
+            <option value="91">Quarterly</option>
+            <option value="365">Yearly</option>
+          </select>
+        </div>
+      </div>
+      <div class="time-result" id="time-result"></div>
+    </div>
+
+    <!-- Dimensions -->
+    <div class="card">
+      <div class="card-title">Dimensions</div>
+      <div class="dim-header">
+        <span>Dimension Name</span>
+        <span>Cardinality</span>
+        <span></span>
+      </div>
+      <div id="dims-list"></div>
+      <button class="btn-add" id="btn-add">+ Add Dimension</button>
+    </div>
+
+    <!-- Fill Factor -->
+    <div class="card">
+      <div class="card-title">Fill Factor</div>
+      <div class="fill-row">
+        <input type="range" id="fill-slider" min="1" max="100" value="100">
+        <span class="fill-value" id="fill-pct">100%</span>
+      </div>
+      <div class="fill-hint">
+        Real cubes are sparse — not every combination of dimension values has data.
+        Reduce this if many combos are expected to be empty (e.g. product only sold in some countries).
+      </div>
+    </div>
+
+  </div>
+
+  <!-- RIGHT COLUMN: Results -->
+  <div class="results-card card">
+    <div class="card-title">Estimated Record Count</div>
+
+    <div class="stat-block">
+      <div class="stat-label">Estimated Rows</div>
+      <div class="stat-value" id="res-estimated">—</div>
+      <div class="stat-sub" id="res-estimated-exact"></div>
+    </div>
+
+    <div class="stat-row">
+      <span class="label">Full cube (100% fill)</span>
+      <span class="val" id="res-full">—</span>
+    </div>
+    <div class="stat-row">
+      <span class="label">Time periods</span>
+      <span class="val" id="res-time">—</span>
+    </div>
+    <div class="stat-row">
+      <span class="label">Dimension count</span>
+      <span class="val" id="res-dim-count">—</span>
+    </div>
+    <div class="stat-row">
+      <span class="label">Fill factor</span>
+      <span class="val" id="res-fill">—</span>
+    </div>
+
+    <div class="formula-section">
+      <div class="formula-title">Formula</div>
+      <div class="formula-wrap" id="formula-wrap"></div>
+    </div>
+  </div>
+
+</div>
+
+<script>
+  const DEFAULT_DIMS = [
+    { name: 'Country', cardinality: 50 },
+    { name: 'Digital Experience', cardinality: 3 },
+    { name: 'Product Type', cardinality: 10 },
+  ];
+
+  let dims = DEFAULT_DIMS.map((d, i) => ({ ...d, id: i }));
+  let nextId = dims.length;
+
+  const dimsList = document.getElementById('dims-list');
+  const timeRangeEl = document.getElementById('time-range');
+  const grainEl = document.getElementById('grain');
+  const fillSlider = document.getElementById('fill-slider');
+  const fillPct = document.getElementById('fill-pct');
+
+  function timePeriods() {
+    const days = Math.max(1, parseInt(timeRangeEl.value) || 1);
+    const grain = Math.max(1, parseInt(grainEl.value) || 1);
+    return Math.max(1, Math.round(days / grain));
+  }
+
+  function grainLabel() {
+    return grainEl.options[grainEl.selectedIndex].text;
+  }
+
+  function fmt(n) {
+    if (n >= 1e12) return (n / 1e12).toFixed(2).replace(/\.?0+$/, '') + 'T';
+    if (n >= 1e9)  return (n / 1e9).toFixed(2).replace(/\.?0+$/, '') + 'B';
+    if (n >= 1e6)  return (n / 1e6).toFixed(2).replace(/\.?0+$/, '') + 'M';
+    if (n >= 1e3)  return (n / 1e3).toFixed(1).replace(/\.?0+$/, '') + 'K';
+    return n.toLocaleString();
+  }
+
+  function fmtExact(n) {
+    if (n < 1e4) return '';
+    return n.toLocaleString() + ' rows';
+  }
+
+  function renderDims() {
+    dimsList.innerHTML = '';
+    if (dims.length === 0) {
+      dimsList.innerHTML = '<div class="empty-msg">No dimensions added yet.</div>';
+      return;
+    }
+    dims.forEach(dim => {
+      const row = document.createElement('div');
+      row.className = 'dim-row';
+      row.dataset.id = dim.id;
+
+      const nameInput = document.createElement('input');
+      nameInput.type = 'text';
+      nameInput.placeholder = 'Dimension name';
+      nameInput.value = dim.name;
+      nameInput.addEventListener('input', e => {
+        dim.name = e.target.value;
+        calculate();
+      });
+
+      const cardInput = document.createElement('input');
+      cardInput.type = 'number';
+      cardInput.placeholder = 'Cardinality';
+      cardInput.min = '1';
+      cardInput.value = dim.cardinality;
+      cardInput.addEventListener('input', e => {
+        const v = parseInt(e.target.value);
+        dim.cardinality = isNaN(v) || v < 1 ? 1 : v;
+        cardInput.classList.toggle('warn', v > 10000);
+        calculate();
+      });
+      cardInput.classList.toggle('warn', dim.cardinality > 10000);
+
+      const removeBtn = document.createElement('button');
+      removeBtn.className = 'btn-remove';
+      removeBtn.title = 'Remove';
+      removeBtn.textContent = '×';
+      removeBtn.addEventListener('click', () => {
+        dims = dims.filter(d => d.id !== dim.id);
+        renderDims();
+        calculate();
+      });
+
+      row.appendChild(nameInput);
+      row.appendChild(cardInput);
+      row.appendChild(removeBtn);
+      dimsList.appendChild(row);
+    });
+  }
+
+  function calculate() {
+    const periods = timePeriods();
+    const fill = parseInt(fillSlider.value) / 100;
+    const dimCardinalities = dims.map(d => Math.max(1, d.cardinality || 1));
+
+    const fullCube = dimCardinalities.reduce((acc, c) => acc * c, periods);
+    const estimated = Math.round(fullCube * fill);
+
+    // Time result hint
+    const days = Math.max(1, parseInt(timeRangeEl.value) || 1);
+    document.getElementById('time-result').textContent =
+      `${fmt(periods)} ${grainLabel().toLowerCase()} period${periods !== 1 ? 's' : ''} (${days.toLocaleString()} days ÷ ${grainEl.value})`;
+
+    // Stats
+    document.getElementById('res-estimated').textContent = fmt(estimated);
+    document.getElementById('res-estimated-exact').textContent = fmtExact(estimated);
+    document.getElementById('res-full').textContent = fmt(fullCube);
+    document.getElementById('res-time').textContent = fmt(periods) + ' ' + grainLabel().toLowerCase();
+    document.getElementById('res-dim-count').textContent = dims.length;
+    document.getElementById('res-fill').textContent = fillSlider.value + '%';
+
+    // Formula
+    const wrap = document.getElementById('formula-wrap');
+    wrap.innerHTML = '';
+
+    const addChip = (text, cls) => {
+      const chip = document.createElement('span');
+      chip.className = 'formula-chip ' + (cls || '');
+      chip.textContent = text;
+      wrap.appendChild(chip);
+    };
+    const addOp = (text) => {
+      const op = document.createElement('span');
+      op.className = text === '=' ? 'formula-eq' : 'formula-op';
+      op.textContent = text;
+      wrap.appendChild(op);
+    };
+
+    addChip(`Time (${fmt(periods)})`, 'time-chip');
+
+    dims.forEach(d => {
+      addOp('×');
+      const label = (d.name || 'Dim') + ` (${fmt(Math.max(1, d.cardinality || 1))})`;
+      addChip(label);
+    });
+
+    if (fill < 1) {
+      addOp('×');
+      addChip(`Fill (${fillSlider.value}%)`, 'fill-chip');
+    }
+
+    addOp('=');
+    addChip(fmt(estimated));
+  }
+
+  // Events
+  timeRangeEl.addEventListener('input', calculate);
+  grainEl.addEventListener('change', calculate);
+
+  fillSlider.addEventListener('input', () => {
+    fillPct.textContent = fillSlider.value + '%';
+    calculate();
+  });
+
+  document.getElementById('btn-add').addEventListener('click', () => {
+    dims.push({ id: nextId++, name: '', cardinality: 1 });
+    renderDims();
+    calculate();
+    // Focus the new name input
+    const rows = dimsList.querySelectorAll('.dim-row');
+    if (rows.length) rows[rows.length - 1].querySelector('input[type="text"]').focus();
+  });
+
+  // Init
+  renderDims();
+  calculate();
+</script>
+</body>
+</html>
